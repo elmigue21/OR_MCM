@@ -380,32 +380,7 @@ namespace WindowsFormsApp5
             }
             if (allZeroColumn || (allZeroRow && arrayColumn.Length == 0))
             {
-                dataGridView3.Rows.Clear();
-                dataGridView3.Columns.Clear();
-                dataGridView3.Refresh();
-                foreach (DataGridViewColumn column in dataGridView2.Columns)
-                {
-                    dataGridView3.Columns.Add(column.Clone() as DataGridViewColumn);
-                }
-                dataGridView3.RowHeadersVisible = true;
-                dataGridView3.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-                dataGridView3.RowHeadersDefaultCellStyle = dataGridView1.RowHeadersDefaultCellStyle.Clone() as DataGridViewCellStyle;
-
-                foreach (DataGridViewRow row in dataGridView2.Rows)
-                {
-                    int index = dataGridView3.Rows.Add();
-                    dataGridView3.Rows[index].Height = row.Height;
-                    for (int i = 0; i < dataGridView2.Columns.Count; i++)
-                    {
-                        dataGridView3.Rows[index].HeaderCell.Value = row.HeaderCell.Value;
-                        dataGridView3.Rows[index].Cells[i].Value = row.Cells[i].Value;
-                    }
-                }
-                dataGridView3.Refresh();
-                if (tabControl1 != null)
-                {
-                    tabControl1.SelectedIndex = 2;
-                }
+                calculateTotalCost();
             }
             minimumCost(); 
             if (dataGridView2.Rows[0].Cells[0].Style.BackColor == Color.LightGoldenrodYellow)
@@ -438,25 +413,10 @@ namespace WindowsFormsApp5
                         }
 
                         totalCost += value1 * value2;
-
-                        if (calculation.Length > 0)
-                        {
-                            calculation.Append(" + ");
-                        }
-
-                        calculation.Append(value1.ToString() + "(" + value2.ToString() + ")");
                     }
                 }
             }
-
-            calculation.Append(" = " + totalCost.ToString());
-
-            MessageBox.Show("Total Cost: " + calculation.ToString(), "Total Cost");
-        }
-        // show total cost button
-        private void button5_Click(object sender, EventArgs e)
-        {
-            calculateTotalCost();
+            label3.Text = "Total Cost: " + totalCost;
         }
 
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)

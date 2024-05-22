@@ -63,3 +63,14 @@ C:\Users\John\Downloads\MinimumCost\WindowsFormsApp5\obj\Debug\WindowsFormsApp5.
 C:\Users\John\Downloads\MinimumCost\WindowsFormsApp5\obj\Debug\WindowsFormsApp5.csproj.CoreCompileInputs.cache
 C:\Users\John\Downloads\MinimumCost\WindowsFormsApp5\obj\Debug\MinimumCost.exe
 C:\Users\John\Downloads\MinimumCost\WindowsFormsApp5\obj\Debug\MinimumCost.pdb
+C:\Users\Ulric\Documents\GitHub\OR_MCM\MinimumCost\WindowsFormsApp5\bin\Debug\MinimumCost.exe.config
+C:\Users\Ulric\Documents\GitHub\OR_MCM\MinimumCost\WindowsFormsApp5\bin\Debug\MinimumCost.exe
+C:\Users\Ulric\Documents\GitHub\OR_MCM\MinimumCost\WindowsFormsApp5\bin\Debug\MinimumCost.pdb
+C:\Users\Ulric\Documents\GitHub\OR_MCM\MinimumCost\WindowsFormsApp5\obj\Debug\WindowsFormsApp5.csproj.AssemblyReference.cache
+C:\Users\Ulric\Documents\GitHub\OR_MCM\MinimumCost\WindowsFormsApp5\obj\Debug\WindowsFormsApp5.Form1.resources
+C:\Users\Ulric\Documents\GitHub\OR_MCM\MinimumCost\WindowsFormsApp5\obj\Debug\MinimumCost.Form2.resources
+C:\Users\Ulric\Documents\GitHub\OR_MCM\MinimumCost\WindowsFormsApp5\obj\Debug\MinimumCost.Properties.Resources.resources
+C:\Users\Ulric\Documents\GitHub\OR_MCM\MinimumCost\WindowsFormsApp5\obj\Debug\WindowsFormsApp5.csproj.GenerateResource.cache
+C:\Users\Ulric\Documents\GitHub\OR_MCM\MinimumCost\WindowsFormsApp5\obj\Debug\WindowsFormsApp5.csproj.CoreCompileInputs.cache
+C:\Users\Ulric\Documents\GitHub\OR_MCM\MinimumCost\WindowsFormsApp5\obj\Debug\MinimumCost.exe
+C:\Users\Ulric\Documents\GitHub\OR_MCM\MinimumCost\WindowsFormsApp5\obj\Debug\MinimumCost.pdb
