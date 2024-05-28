@@ -480,6 +480,11 @@ namespace WindowsFormsApp5
                 cell.Style.SelectionBackColor = cellState.SelectionBackColor;
             }
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Outside Number : Allocation Value \nInner Number : Cost");
+        }
     }
     public class CellState
     {
