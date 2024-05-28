@@ -430,21 +430,24 @@ namespace WindowsFormsApp5
                 List<CellState> previousState = stateStack.Pop();
                 RestorePreviousState(previousState);
             }
-            valueMultiply.RemoveAt(valueMultiply.Count - 1);
-            valueMultiply2.RemoveAt(valueMultiply2.Count - 1);
-            qwerty = "";
-            int tot = 0;
-            for (int i = 0; i < valueMultiply.Count; i++)
+            if (valueMultiply.Count > 0)
             {
-                qwerty += "(" + valueMultiply[i].ToString() + ")(" + valueMultiply2[i].ToString() + ")";
-                tot += valueMultiply[i] * valueMultiply2[i];
-                if (i < valueMultiply.Count - 1)
+                valueMultiply.RemoveAt(valueMultiply.Count - 1);
+                valueMultiply2.RemoveAt(valueMultiply2.Count - 1);
+                qwerty = "";
+                int tot = 0;
+                for (int i = 0; i < valueMultiply.Count; i++)
                 {
-                    qwerty += " + ";
+                    qwerty += "(" + valueMultiply[i].ToString() + ")(" + valueMultiply2[i].ToString() + ")";
+                    tot += valueMultiply[i] * valueMultiply2[i];
+                    if (i < valueMultiply.Count - 1)
+                    {
+                        qwerty += " + ";
+                    }
                 }
+                qwerty += " = " + tot;
+                label3.Text = "Total Cost: " + qwerty.ToString();
             }
-            qwerty += " = " + tot;
-            label3.Text = "Total Cost: " + qwerty.ToString();
         }
         private void SaveCurrentState()
         {
