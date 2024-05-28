@@ -62,9 +62,10 @@ namespace WindowsFormsApp5
                 {
                     for (int j = 0; j < dataGridView2.RowCount-1; j++)
                     {
-                        if (dataGridView2.Rows[j].Cells[i].Value != null && dataGridView2.Rows[j].Cells[i].Value.ToString() != "x")
+                        if (dataGridView2.Rows[j].Cells[i].Value != null && dataGridView2.Rows[j].Cells[i].Value.ToString() != ("x  |  " + dataGridView1.Rows[j].Cells[i].Value))
                         {
-                            int cost = Int32.Parse(dataGridView2.Rows[j].Cells[i].Value.ToString());
+                        if (Int32.TryParse(dataGridView2.Rows[j].Cells[i].Value.ToString(), out int cost))
+                        {
                             if (cost < minCost && dataGridView2.Rows[j].Cells[i].Style.BackColor != Color.LightGoldenrodYellow)
                             {
                                 minCost = cost;
@@ -72,6 +73,7 @@ namespace WindowsFormsApp5
                                 minCostColumnIndex = i;
                             }
                         }
+                    }
                     }
                 }
                 if (minCostRowIndex != -1 && minCostColumnIndex != -1)
@@ -245,47 +247,44 @@ namespace WindowsFormsApp5
             {
                 for (int i = 0; i < dataGridView2.Rows.Count - 1; i++)
                 {
-
-                    if (dataGridView2.Rows[i].Cells[minCostColumnIndex].Style.BackColor == Color.LightGoldenrodYellow)
+                    var cell = dataGridView2.Rows[i].Cells[minCostColumnIndex];
+                    if (cell.Style.BackColor != Color.LightGoldenrodYellow && !cell.Value.ToString().StartsWith("x  |  "))
                     {
-                        continue;
+                        cell.Value = "x  |  " + cell.Value;
                     }
-                    dataGridView2.Rows[i].Cells[minCostColumnIndex].Value = "x";
                 }
                 for (int j = 0; j < dataGridView2.ColumnCount - 1; j++)
                 {
-                    if (dataGridView2.Rows[minCostRowIndex].Cells[j].Style.BackColor == Color.LightGoldenrodYellow)
+                    var cell = dataGridView2.Rows[minCostRowIndex].Cells[j];
+                    if (cell.Style.BackColor != Color.LightGoldenrodYellow && !cell.Value.ToString().StartsWith("x  |  "))
                     {
-                        continue;
+                        cell.Value = "x  |  " + cell.Value;
                     }
-                    dataGridView2.Rows[minCostRowIndex].Cells[j].Value = "x";
                 }
-
-
             }
             else if (minCostSupply > minCostDemand)
             {
                 for (int i = 0; i < dataGridView2.Rows.Count - 1; i++)
                 {
-                    if (dataGridView2.Rows[i].Cells[minCostColumnIndex].Style.BackColor == Color.LightGoldenrodYellow)
+                    var cell = dataGridView2.Rows[i].Cells[minCostColumnIndex];
+                    if (cell.Style.BackColor != Color.LightGoldenrodYellow && !cell.Value.ToString().StartsWith("x  |  "))
                     {
-                        continue;
+                        cell.Value = "x  |  " + cell.Value;
                     }
-                    dataGridView2.Rows[i].Cells[minCostColumnIndex].Value = "x";
                 }
             }
             else
             {
                 for (int i = 0; i < dataGridView2.ColumnCount - 1; i++)
                 {
-                    if (dataGridView2.Rows[minCostRowIndex].Cells[i].Style.BackColor == Color.LightGoldenrodYellow)
+                    var cell = dataGridView2.Rows[minCostRowIndex].Cells[i];
+                    if (cell.Style.BackColor != Color.LightGoldenrodYellow && !cell.Value.ToString().StartsWith("x  |  "))
                     {
-                        continue;
+                        cell.Value = "x  |  " + cell.Value;
                     }
-                    dataGridView2.Rows[minCostRowIndex].Cells[i].Value = "x";
                 }
             }
-            dataGridView2.Rows[minCostRowIndex].Cells[minCostColumnIndex].Value = lowest;
+            dataGridView2.Rows[minCostRowIndex].Cells[minCostColumnIndex].Value = lowest + "  |  " + dataGridView2.Rows[minCostRowIndex].Cells[minCostColumnIndex].Value;
         }
         // solve button
         private void button1_Click(object sender, EventArgs e)
@@ -332,6 +331,7 @@ namespace WindowsFormsApp5
                 {
                     tabControl1.SelectedIndex = 1;
                 }
+                dataGridView2.DefaultCellStyle.SelectionBackColor = Color.White;
         }
         // next step button
         private void button3_Click(object sender, EventArgs e)
@@ -380,7 +380,7 @@ namespace WindowsFormsApp5
             }
             if (allZeroColumn || (allZeroRow && arrayColumn.Length == 0))
             {
-                calculateTotalCost();
+                //calculateTotalCost();
             }
             minimumCost(); 
             if (dataGridView2.Rows[0].Cells[0].Style.BackColor == Color.LightGoldenrodYellow)
@@ -413,10 +413,17 @@ namespace WindowsFormsApp5
                         }
 
                         totalCost += value1 * value2;
+                        if (calculation.Length > 0)
+                        {
+                            calculation.Append(" + ");
+                        }
+
+                        calculation.Append(value1.ToString() + "(" + value2.ToString() + ")");
                     }
                 }
             }
-            label3.Text = "Total Cost: " + totalCost;
+            calculation.Append(" = " + totalCost.ToString());
+            label3.Text = "Total Cost: " + calculation.ToString();
         }
 
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
