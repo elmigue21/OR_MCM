@@ -16,6 +16,7 @@ namespace WindowsFormsApp5
         private Stack<List<CellState>> stateStack = new Stack<List<CellState>>();
         public List<int> valueMultiply = new List<int>();
         public List<int> valueMultiply2 = new List<int>();
+        public string qwerty;
         public Form1()
         {
             InitializeComponent();
@@ -291,7 +292,7 @@ namespace WindowsFormsApp5
             valueMultiply.Add(lowest);
             valueMultiply2.Add(Convert.ToInt32(dataGridView2.Rows[minCostRowIndex].Cells[minCostColumnIndex].Value));
             dataGridView2.Rows[minCostRowIndex].Cells[minCostColumnIndex].Value = $"{lowest}({dataGridView2.Rows[minCostRowIndex].Cells[minCostColumnIndex].Value})";
-            string qwerty = "";
+            qwerty = "";
             int tot = 0;
             for (int i = 0; i < valueMultiply.Count; i++)
             {
@@ -429,6 +430,21 @@ namespace WindowsFormsApp5
                 List<CellState> previousState = stateStack.Pop();
                 RestorePreviousState(previousState);
             }
+            valueMultiply.RemoveAt(valueMultiply.Count - 1);
+            valueMultiply2.RemoveAt(valueMultiply2.Count - 1);
+            qwerty = "";
+            int tot = 0;
+            for (int i = 0; i < valueMultiply.Count; i++)
+            {
+                qwerty += "(" + valueMultiply[i].ToString() + ")(" + valueMultiply2[i].ToString() + ")";
+                tot += valueMultiply[i] * valueMultiply2[i];
+                if (i < valueMultiply.Count - 1)
+                {
+                    qwerty += " + ";
+                }
+            }
+            qwerty += " = " + tot;
+            label3.Text = "Total Cost: " + qwerty.ToString();
         }
         private void SaveCurrentState()
         {
