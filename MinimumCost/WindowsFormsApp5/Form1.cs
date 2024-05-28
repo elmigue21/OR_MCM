@@ -13,6 +13,9 @@ namespace WindowsFormsApp5
 {
     public partial class Form1 : Form
     {
+        private Stack<List<CellState>> stateStack = new Stack<List<CellState>>();
+        public List<int> valueMultiply = new List<int>();
+        public List<int> valueMultiply2 = new List<int>();
         public Form1()
         {
             InitializeComponent();
@@ -55,6 +58,7 @@ namespace WindowsFormsApp5
         }
         private void minimumCost()
         {
+            SaveCurrentState();
             int minCost = int.MaxValue;
             int minCostRowIndex = -1;
             int minCostColumnIndex = -1;
@@ -62,7 +66,7 @@ namespace WindowsFormsApp5
                 {
                     for (int j = 0; j < dataGridView2.RowCount-1; j++)
                     {
-                        if (dataGridView2.Rows[j].Cells[i].Value != null && dataGridView2.Rows[j].Cells[i].Value.ToString() != ("x  |  " + dataGridView1.Rows[j].Cells[i].Value))
+                        if (dataGridView2.Rows[j].Cells[i].Value != null && dataGridView2.Rows[j].Cells[i].Value.ToString() != ($"x({dataGridView1.Rows[j].Cells[i].Value})"))
                         {
                         if (Int32.TryParse(dataGridView2.Rows[j].Cells[i].Value.ToString(), out int cost))
                         {
@@ -248,17 +252,17 @@ namespace WindowsFormsApp5
                 for (int i = 0; i < dataGridView2.Rows.Count - 1; i++)
                 {
                     var cell = dataGridView2.Rows[i].Cells[minCostColumnIndex];
-                    if (cell.Style.BackColor != Color.LightGoldenrodYellow && !cell.Value.ToString().StartsWith("x  |  "))
+                    if (cell.Style.BackColor != Color.LightGoldenrodYellow && !cell.Value.ToString().StartsWith("x"))
                     {
-                        cell.Value = "x  |  " + cell.Value;
+                        cell.Value = $"x({cell.Value})";
                     }
                 }
                 for (int j = 0; j < dataGridView2.ColumnCount - 1; j++)
                 {
                     var cell = dataGridView2.Rows[minCostRowIndex].Cells[j];
-                    if (cell.Style.BackColor != Color.LightGoldenrodYellow && !cell.Value.ToString().StartsWith("x  |  "))
+                    if (cell.Style.BackColor != Color.LightGoldenrodYellow && !cell.Value.ToString().StartsWith("x"))
                     {
-                        cell.Value = "x  |  " + cell.Value;
+                        cell.Value = $"x({cell.Value})";
                     }
                 }
             }
@@ -267,9 +271,9 @@ namespace WindowsFormsApp5
                 for (int i = 0; i < dataGridView2.Rows.Count - 1; i++)
                 {
                     var cell = dataGridView2.Rows[i].Cells[minCostColumnIndex];
-                    if (cell.Style.BackColor != Color.LightGoldenrodYellow && !cell.Value.ToString().StartsWith("x  |  "))
+                    if (cell.Style.BackColor != Color.LightGoldenrodYellow && !cell.Value.ToString().StartsWith("x"))
                     {
-                        cell.Value = "x  |  " + cell.Value;
+                        cell.Value = $"x({cell.Value})";
                     }
                 }
             }
@@ -278,13 +282,28 @@ namespace WindowsFormsApp5
                 for (int i = 0; i < dataGridView2.ColumnCount - 1; i++)
                 {
                     var cell = dataGridView2.Rows[minCostRowIndex].Cells[i];
-                    if (cell.Style.BackColor != Color.LightGoldenrodYellow && !cell.Value.ToString().StartsWith("x  |  "))
+                    if (cell.Style.BackColor != Color.LightGoldenrodYellow && !cell.Value.ToString().StartsWith("x"))
                     {
-                        cell.Value = "x  |  " + cell.Value;
+                        cell.Value = $"x({cell.Value})";
                     }
                 }
             }
-            dataGridView2.Rows[minCostRowIndex].Cells[minCostColumnIndex].Value = lowest + "  |  " + dataGridView2.Rows[minCostRowIndex].Cells[minCostColumnIndex].Value;
+            valueMultiply.Add(lowest);
+            valueMultiply2.Add(Convert.ToInt32(dataGridView2.Rows[minCostRowIndex].Cells[minCostColumnIndex].Value));
+            dataGridView2.Rows[minCostRowIndex].Cells[minCostColumnIndex].Value = $"{lowest}({dataGridView2.Rows[minCostRowIndex].Cells[minCostColumnIndex].Value})";
+            string qwerty = "";
+            int tot = 0;
+            for (int i = 0; i < valueMultiply.Count; i++)
+            {
+                qwerty += "(" + valueMultiply[i].ToString() + ")(" + valueMultiply2[i].ToString() + ")";
+                tot += valueMultiply[i] * valueMultiply2[i];
+                if (i < valueMultiply.Count - 1)
+                {
+                    qwerty += " + ";
+                }
+            }
+            qwerty += " = " + tot;
+            label3.Text = "Total Cost: " + qwerty.ToString();
         }
         // solve button
         private void button1_Click(object sender, EventArgs e)
@@ -332,6 +351,9 @@ namespace WindowsFormsApp5
                     tabControl1.SelectedIndex = 1;
                 }
                 dataGridView2.DefaultCellStyle.SelectionBackColor = Color.White;
+            label3.Text = "";
+            valueMultiply.Clear();
+            valueMultiply2.Clear();
         }
         // next step button
         private void button3_Click(object sender, EventArgs e)
@@ -378,54 +400,12 @@ namespace WindowsFormsApp5
                     break;
                 }
             }
-            if (allZeroColumn || (allZeroRow && arrayColumn.Length == 0))
-            {
-                //calculateTotalCost();
-            }
             minimumCost(); 
             if (dataGridView2.Rows[0].Cells[0].Style.BackColor == Color.LightGoldenrodYellow)
             {
                 dataGridView2.DefaultCellStyle.SelectionBackColor = Color.LightGoldenrodYellow;
             }
         }
-        private void calculateTotalCost()
-        {
-            StringBuilder calculation = new StringBuilder();
-            int totalCost = 0;
-
-            for (int i = 0; i < dataGridView2.Columns.Count - 1; i++)
-            {
-                for (int j = 0; j < dataGridView2.Rows.Count - 1; j++)
-                {
-                    if (dataGridView2.Rows[j].Cells[i].Value != null && i < dataGridView1.Columns.Count && j < dataGridView1.Rows.Count)
-                    {
-                        int value1 = 0;
-                        int value2 = 0;
-
-                        if (dataGridView1.Rows[j].Cells[i].Value != null)
-                        {
-                            value1 = Int32.Parse(dataGridView1.Rows[j].Cells[i].Value.ToString());
-                        }
-
-                        if (dataGridView2.Rows[j].Cells[i].Value.ToString() != "x")
-                        {
-                            value2 = Int32.Parse(dataGridView2.Rows[j].Cells[i].Value.ToString());
-                        }
-
-                        totalCost += value1 * value2;
-                        if (calculation.Length > 0)
-                        {
-                            calculation.Append(" + ");
-                        }
-
-                        calculation.Append(value1.ToString() + "(" + value2.ToString() + ")");
-                    }
-                }
-            }
-            calculation.Append(" = " + totalCost.ToString());
-            label3.Text = "Total Cost: " + calculation.ToString();
-        }
-
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             
@@ -441,5 +421,53 @@ namespace WindowsFormsApp5
             textBox1.ReadOnly = false;
             textBox2.ReadOnly = false;
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (stateStack.Count > 0)
+            {
+                List<CellState> previousState = stateStack.Pop();
+                RestorePreviousState(previousState);
+            }
+        }
+        private void SaveCurrentState()
+        {
+            List<CellState> currentState = new List<CellState>();
+            for (int i = 0; i < dataGridView2.Rows.Count; i++)
+            {
+                for (int j = 0; j < dataGridView2.Columns.Count; j++)
+                {
+                    DataGridViewCell cell = dataGridView2.Rows[i].Cells[j];
+                    currentState.Add(new CellState
+                    {
+                        RowIndex = i,
+                        ColumnIndex = j,
+                        Value = cell.Value,
+                        BackColor = cell.Style.BackColor,
+                        SelectionBackColor = cell.Style.SelectionBackColor
+                    });
+                }
+            }
+            stateStack.Push(currentState);
+        }
+
+        private void RestorePreviousState(List<CellState> previousState)
+        {
+            foreach (var cellState in previousState)
+            {
+                DataGridViewCell cell = dataGridView2.Rows[cellState.RowIndex].Cells[cellState.ColumnIndex];
+                cell.Value = cellState.Value;
+                cell.Style.BackColor = cellState.BackColor;
+                cell.Style.SelectionBackColor = cellState.SelectionBackColor;
+            }
+        }
+    }
+    public class CellState
+    {
+        public int RowIndex { get; set; }
+        public int ColumnIndex { get; set; }
+        public object Value { get; set; }
+        public Color BackColor { get; set; }
+        public Color SelectionBackColor { get; set; }
     }
 }
