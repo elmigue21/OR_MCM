@@ -429,6 +429,10 @@ namespace WindowsFormsApp5
             {
                 List<CellState> previousState = stateStack.Pop();
                 RestorePreviousState(previousState);
+                if (dataGridView2.DefaultCellStyle.SelectionBackColor == Color.LightGoldenrodYellow)
+                {
+                    dataGridView2.DefaultCellStyle.SelectionBackColor = Color.White;
+                }
             }
             if (valueMultiply.Count > 0)
             {
